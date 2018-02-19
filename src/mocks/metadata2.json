@@ -1,0 +1,21 @@
+{
+    "name": "Table",
+    "version": 2,
+    "sections": [
+        {
+            "name": "First section",
+            "fields": [
+                {
+                    "label": "Second version field",
+                    "field": "title",
+                    "type": "string"
+                },
+                {
+                    "label": "Second version Second field",
+                    "field": "body",
+                    "type": "string"
+                }
+            ]
+        }
+    ]
+}
