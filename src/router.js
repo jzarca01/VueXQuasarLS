@@ -21,13 +21,14 @@ export default new VueRouter({
    * build publicPath back to '' so Cordova builds work again.
    */
 
-  mode: 'hash',
+  mode: 'history',
   scrollBehavior: () => ({ y: 0 }),
 
   routes: [
-    { path: '/', component: load('Table') },
-
+    { path: '/', component: load('Hello') },
+    { path: '/table', component: load('Table') },
+    { path: '/form', component: load('Form'), props: true },
     // Always leave this last one
-    { path: '*', component: load('Error404') } // Not found
+    { path: '*', component: load('Error') } // Not found
   ]
 })

@@ -1,6 +1,8 @@
 var webpackConfig = require('../build/webpack.dev.conf');
 
 require('jsdom-global')()
+require('mock-local-storage')
+// global.expect = require('expect')
 
 module.exports = function (config) {
   config.set({

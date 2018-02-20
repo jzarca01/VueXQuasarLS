@@ -1,30 +1,34 @@
 <template>
-  <div class="form">
-    Id: <q-input
-      v-model="form.id"
-    />
-    User Id: <q-input
-      v-model="form.userId"
-    />
-    Title: <q-input
-      v-model="form.title"
-    />
-    Body: <q-input
-      v-model="form.body"
-    />
-    <q-btn color="primary" @click="submitPost">Submit</q-btn>
-    <q-btn @click="cancelPost">Cancel</q-btn>
+  <div class="layout-padding">
+    <div class="form">
+      Id: <q-input
+        v-model="form.id"
+      />
+      User Id: <q-input
+        v-model="form.userId"
+      />
+      Title: <q-input
+        v-model="form.title"
+      />
+      Body: <q-input
+        v-model="form.body"
+      />
+      <q-btn ref="submitButton" color="primary" @click="submitPost">Submit</q-btn>
+      <q-btn ref="cancelButton" @click="cancelPost">Cancel</q-btn>
+    </div>
   </div>
 </template>
 
 <script>
 import { QInput, QBtn } from 'quasar'
+import { mapMutations } from 'vuex'
 
 export default {
   components: {
     QInput,
     QBtn
   },
+  props: ['id'],
   data () {
     return {
       form: {
@@ -36,13 +40,18 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('table', {
+      addItem: 'addItem'
+    }),
     submitPost () {
-      this.$parent.addItem({item: this.form})
-      this.$parent.toggleEdit(false)
+      this.addItem({item: this.form})
     },
     cancelPost () {
-      this.$parent.toggleEdit(false)
+      this.$router.go(-1)
     }
+  },
+  mounted () {
+    console.log('props', this.$route)
   }
 }
 </script>

@@ -1,21 +1,22 @@
 <template>
-  <div>
-    <q-btn color="primary" @click="toggleLoading(!state.toggleLoading)">Toggle loading</q-btn>
-    <div v-if="state.toggleLoading">
-      <q-spinner color="primary" :size="30" />
-    </div>
-    <div class="content" v-else>
-        <q-btn class="btn" color="primary" @click="toggleEdit(!state.toggleEdit)" :disabled="state.toggleEdit">Add post</q-btn>
-        <FormComponent v-if="state.toggleEdit" />
-        <q-data-table
-            v-if="state.items && state.items.length"
-            :data="state.items"
-            :columns="state.columns">
-            <!-- Custom renderer for "title" column -->
-            <template slot="col-title" slot-scope="cell">
-                <span class="light-paragraph">{{cell.data}}</span>
-            </template>
-        </q-data-table>
+  <div class="layout-padding">
+    <div>
+      <q-btn color="primary" ref="loadingButton" @click="toggleLoading(!state.toggleLoading)">Toggle loading</q-btn>
+      <div v-if="state.toggleLoading" class="layout-padding">
+        <q-spinner color="primary" :size="50" />
+      </div>
+      <div class="content" v-else>
+          <q-btn class="btn" ref="editButton" color="primary" @click="gotoForm()">Add post</q-btn>
+          <q-data-table
+              v-if="state.columns && state.columns.length"
+              :data="state.items"
+              :columns="state.columns">
+              <!-- Custom renderer for "title" column -->
+              <template slot="col-title" slot-scope="cell">
+                  <span class="light-paragraph">{{cell.data}}</span>
+              </template>
+          </q-data-table>
+      </div>
     </div>
   </div>
 </template>
@@ -51,13 +52,15 @@ export default {
   methods: {
     ...mapMutations('table', {
       addItem: 'addItem',
-      toggleLoading: 'toggleLoading',
-      toggleEdit: 'toggleEdit'
+      toggleLoading: 'toggleLoading'
     }),
     ...mapActions('table', {
       getMetadata: 'fetchMetadata',
       getData: 'fetchData'
-    })
+    }),
+    gotoForm () {
+      this.$router.push({ path: 'form', params: { id: 12 } })
+    }
   },
   mounted () {
     if (!this.state.version) {
