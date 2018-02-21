@@ -96,6 +96,7 @@ export default {
     async fetchMetadata (context) {
       const metaDataVersion = context.state.version
       try {
+        await context.commit('toggleLoading', true)
         const response = await mockGetMetadata(metaDataVersion)
         console.log('fetch metadata response', response)
         if (response.version) {
@@ -109,6 +110,7 @@ export default {
             columns: data.fields
           })
         }
+        await context.commit('toggleLoading', false)
       }
       catch (err) {
         console.log('err fetchmetadata', err)
@@ -118,6 +120,7 @@ export default {
       const metaDataVersion = context.state.version
       console.log('state version', metaDataVersion)
       try {
+        await context.commit('toggleLoading', true)
         const response = await mockPostData(metaDataVersion)
         console.log('fetch data response', response)
         if (response.error === 'isObsolete') {
@@ -130,6 +133,7 @@ export default {
             item: item
           }))
         }
+        await context.commit('toggleLoading', false)
       }
       catch (err) {
         console.log('err fetchdata', err)
