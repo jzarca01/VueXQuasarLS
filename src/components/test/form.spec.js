@@ -13,22 +13,24 @@ describe('Table.vue', () => {
   let store
   let getters
   let mutations
+  let state
 
   beforeEach(() => {
+    state = {
+      items: [],
+    },
     mutations = {
       addItem: sinon.stub()
     }
     getters = {
       getState: state => state,
       getItemsLength: state => state.items.length
-    }
+    },
     store = new Vuex.Store({
       modules: {
         table: {
           namespaced: true,
-          state: {
-            items: [],
-          },
+          state: state,
           getters: getters,
           mutations: mutations
         }
@@ -56,7 +58,5 @@ describe('Table.vue', () => {
     const submitButton = wrapper.find({ref : "submitButton"})
     submitButton.trigger('click')
     expect(mutations.addItem.calledOnce).to.equal(true)
-    expect(getters.getItemsLength).to.equal(1)
   })
 })
-

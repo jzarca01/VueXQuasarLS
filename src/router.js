@@ -26,8 +26,8 @@ export default new VueRouter({
 
   routes: [
     { path: '/', component: load('Hello') },
-    { path: '/table', component: load('Table') },
-    { path: '/form', component: load('Form'), props: true },
+    { path: '/table', name: 'table', component: load('Table') },
+    { path: '/form', name: 'form', component: load('Form'), props: true },
     // Always leave this last one
     { path: '*', component: load('Error') } // Not found
   ]

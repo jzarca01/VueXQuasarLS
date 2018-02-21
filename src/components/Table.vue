@@ -59,7 +59,7 @@ export default {
       getData: 'fetchData'
     }),
     gotoForm () {
-      this.$router.push({ path: 'form', params: { id: 12 } })
+      this.$router.push({ name: 'form', params: { id: 12 } })
     }
   },
   mounted () {
