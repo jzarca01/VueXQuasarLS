@@ -3,8 +3,8 @@
   <div class="layout-padding">
     <h1>Hello</h1>
     <div>
-        <router-link to="table">Table</router-link> |
-        <router-link :to="{ path: '/form', params: { id: 12} }">Form</router-link>
+        <router-link ref="tableLink" to="table">Table</router-link> |
+        <router-link ref="formLink" :to="{ name: 'form', params: { id: 12} }">Form</router-link>
     </div>
   </div>
 </template>

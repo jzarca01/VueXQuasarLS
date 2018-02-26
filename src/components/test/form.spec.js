@@ -1,14 +1,17 @@
+import chai, { expect } from 'chai'
 import sinon from 'sinon'
-import { expect, assert } from 'chai'
+import sinonChai from 'sinon-chai'
 import { mount, createLocalVue } from '@vue/test-utils'
-import Vuex from 'vuex'
 
+chai.use(sinonChai)
+
+import Vuex from 'vuex'
 import Form from '../Form.vue'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
 
-describe('Table.vue', () => {
+describe('Component: Form.vue', () => {
   let wrapper
   let store
   let getters
@@ -41,11 +44,11 @@ describe('Table.vue', () => {
       localVue
     })
   })
-  it('renders Form.vue without crashing', () => {
+  it('should render Form.vue without crashing', () => {
     expect(wrapper.contains('div')).to.be.true
   })
 
-  it('add an item when clicking on submitButton', () => {
+  it('should add an item when clicking on submitButton', () => {
     wrapper.setData({
       form: {
         id:0,
@@ -57,6 +60,6 @@ describe('Table.vue', () => {
 
     const submitButton = wrapper.find({ref : "submitButton"})
     submitButton.trigger('click')
-    expect(mutations.addItem.calledOnce).to.equal(true)
+    expect(mutations.addItem).to.have.been.calledOnce
   })
 })

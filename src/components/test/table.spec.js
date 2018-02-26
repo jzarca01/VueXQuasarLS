@@ -1,26 +1,38 @@
+import chai, { expect } from 'chai'
 import sinon from 'sinon'
-import { expect, assert } from 'chai'
+import sinonChai from 'sinon-chai'
 import { mount, createLocalVue } from '@vue/test-utils'
-import Vuex from 'vuex'
 
+chai.use(sinonChai)
+
+import Vuex from 'vuex'
 import Table from '../Table.vue'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
 
-describe('Table.vue', () => {
+describe('Component: Table.vue', () => {
   let wrapper
   let store
   let actions
   let mutations
+  let fetchMetaStub;
+  let fetchDataStub;
+  let toggleLoadingStub;
+  let goToFormStub;
 
   beforeEach(() => {
+    fetchMetaStub = sinon.stub();
+    fetchDataStub = sinon.stub();
+    toggleLoadingStub = sinon.stub();
+    goToFormStub = sinon.stub()
+
     actions = {
-      fetchMetadata: sinon.stub(),
-      fetchData: sinon.stub()
+      fetchMetadata: fetchMetaStub,
+      fetchData: fetchDataStub
     }
     mutations = {
-      toggleLoading: sinon.stub()
+      toggleLoading: toggleLoadingStub
     }
     store = new Vuex.Store({
       modules: {
@@ -46,37 +58,40 @@ describe('Table.vue', () => {
       localVue
     })
   })
-  it('renders Table.vue without crashing', () => {
+  it('should render Table.vue without crashing', () => {
     expect(wrapper.contains('div')).to.be.true
   })
 
-  it('calls getMetadata when mounted without version', () => {
-    expect(actions.fetchMetadata.calledOnce).to.equal(true)
+  it('should call getMetadata when mounted without version', () => {
+    expect(fetchMetaStub).to.have.been.calledOnce
   })
 
-  it('doesnt call getMetadata when mounted with version', () => {
+  it('should not call getMetadata when mounted with version', () => {
+    fetchMetaStub.reset()
     store.replaceState({
       table: {
-        state: {
-          version: 1
-        }
+        version: 1
       }
     })
     wrapper = mount(Table, {
       store,
       localVue
     })
-    expect(actions.fetchMetadata.calledOnce).to.equal(false)
+    expect(fetchMetaStub).not.to.have.been.called
   })
 
-  it('toggles loading when clicking on toggle loading button', () => {
-    wrapper = mount(Table, {
-      store,
-      localVue
-    })
+  it('should toggle loading when clicking on toggle loading button', () => {
     const loadingButton = wrapper.find({ref : "loadingButton"})
     loadingButton.trigger('click')
-    expect(mutations.toggleLoading.calledOnce).to.equal(true)
+    expect(toggleLoadingStub).to.have.been.called
+  })
+
+  it('should trigger gotoForm when clicking on add post button', () => {
+    wrapper.setMethods({
+      gotoForm: goToFormStub
+    })
+    const addPostButton = wrapper.find({ref : "editButton"})
+    addPostButton.trigger('click')
+    expect(goToFormStub).to.have.been.called
   })
 })
-

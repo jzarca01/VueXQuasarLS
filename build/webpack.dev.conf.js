@@ -17,7 +17,8 @@ module.exports = merge(baseWebpackConfig, {
   devtool: '#cheap-module-eval-source-map',
   devServer: {
     historyApiFallback: true,
-    noInfo: true
+    noInfo: true,
+    hot: true
   },
   module: {
     rules: cssUtils.styleRules({
@@ -35,7 +36,8 @@ module.exports = merge(baseWebpackConfig, {
     }),
     new FriendlyErrorsPlugin({
       clearConsole: config.dev.clearConsoleOnRebuild
-    })
+    }),
+    new webpack.NamedModulesPlugin()
   ],
   performance: {
     hints: false

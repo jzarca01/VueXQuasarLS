@@ -11,30 +11,15 @@ module.exports = function (config) {
     //    http://karma-runner.github.io/0.13/config/browsers.html
     // 2. add it to the `browsers` array below.
     browsers: ['Chrome', 'IE'],
-    frameworks: ['mocha', 'sinon-chai'],
+    frameworks: ['mocha', 'chai', 'sinon-chai'],
     reporters: ['spec', 'coverage'],
-    files: ['./index.js'],
+    files: [
+      './index.js',
+      '../node_modules/chai/chai.js'
+    ],
     preprocessors: {
       './index.js': ['webpack', 'sourcemap']
     },
-    // ** ADD THIS IN ** (vue-cli's webpack template doesn't add it by default)
-    plugins: [
-      // Launchers
-      'karma-chrome-launcher',
-      'karma-ie-launcher',
-
-      // Test Libraries
-      'karma-mocha',
-      'karma-sinon-chai',
-
-      // Preprocessors
-      'karma-webpack',
-      'karma-sourcemap-loader',
-
-      // Reporters
-      'karma-spec-reporter',
-      'karma-coverage'
-    ],
     webpack: webpackConfig,
     webpackMiddleware: {
       noInfo: true

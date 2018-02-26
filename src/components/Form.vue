@@ -49,9 +49,6 @@ export default {
     cancelPost () {
       this.$router.go(-1)
     }
-  },
-  mounted () {
-    console.log('props', this.$route)
   }
 }
 </script>

@@ -32,10 +32,6 @@ const mockGetMetadata = (version) => {
 const mockPostData = async (version) => {
   return new Promise((resolve, reject) => {
     setTimeout(async function () {
-      console.log('post data version', parseInt(version))
-      console.log('post data version', parseInt(metaData2.version))
-      console.log('isEqual', parseInt(version) === parseInt(metaData2.version))
-
       if (parseInt(version) === parseInt(metaData2.version)) {
         resolve({ data: await fetchItems('http://jsonplaceholder.typicode.com/posts') })
       }
@@ -45,12 +41,11 @@ const mockPostData = async (version) => {
     }, 2000)
   })
 }
-
 export default {
   namespaced: true,
 
   state: {
-    version: null,
+    version: 0,
     columns: [],
     items: [],
     toggleEdit: false,
@@ -59,7 +54,6 @@ export default {
   },
   mutations: {
     setMetadataVersion (state, payload) {
-      console.log('payload', payload)
       state.version = payload.version
       return state
     },
@@ -67,7 +61,6 @@ export default {
       state.columns = []
     },
     setColumns (state, payload) {
-      console.log(payload.columns)
       payload.columns.map(column => state.columns.push(column))
       return state
     },
@@ -75,8 +68,8 @@ export default {
       state.items.push(payload.item)
       return state
     },
-    deleteItem (state, item) {
-      state.items = state.items.filter(e => e !== item)
+    deleteItem (state, payload) {
+      state.items = state.items.filter(e => e !== payload.item)
       return state
     },
     toggleEdit (state, isEdit) {
@@ -98,7 +91,6 @@ export default {
       try {
         await context.commit('toggleLoading', true)
         const response = await mockGetMetadata(metaDataVersion)
-        console.log('fetch metadata response', response)
         if (response.version) {
           await context.commit('setMetadataVersion', {
             version: response.version
@@ -118,11 +110,9 @@ export default {
     },
     async fetchData (context) {
       const metaDataVersion = context.state.version
-      console.log('state version', metaDataVersion)
       try {
         await context.commit('toggleLoading', true)
         const response = await mockPostData(metaDataVersion)
-        console.log('fetch data response', response)
         if (response.error === 'isObsolete') {
           await context.commit('resetColumns')
           await context.commit('setObsoleteMetadata', true)
