@@ -52,6 +52,10 @@ module.exports = {
         exclude: /node_modules/
       },
       {
+        test: /\.(vue|js)$/,
+        use: ['webpack-conditional-loader']
+      },
+      {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
@@ -104,5 +108,6 @@ module.exports = {
   ],
   performance: {
     hints: false
-  }
+  },
+  node: {fs: "empty"}
 }

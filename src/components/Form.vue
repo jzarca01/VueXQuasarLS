@@ -14,7 +14,7 @@
         v-model="form.body"
       />
       <q-btn ref="submitButton" color="primary" @click="submitPost">Submit</q-btn>
-      <q-btn ref="cancelButton" @click="cancelPost">Cancel</q-btn>
+      <q-btn ref="cancelButton" name="cancelButton" @click="cancelPost">Cancel</q-btn>
     </div>
   </div>
 </template>

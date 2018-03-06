@@ -1,12 +1,12 @@
 <template>
   <div class="layout-padding">
     <div>
-      <q-btn color="primary" ref="loadingButton" @click="toggleLoading(!state.toggleLoading)">Toggle loading</q-btn>
+      <q-btn color="primary" ref="loadingButton" name="loadingButton" @click="toggleLoading(!state.toggleLoading)">Toggle loading</q-btn>
       <div v-if="state.toggleLoading" class="layout-padding">
         <q-spinner color="primary" :size="50" />
       </div>
       <div class="content" v-else>
-          <q-btn class="btn" ref="editButton" color="primary" @click="gotoForm()">Add post</q-btn>
+          <q-btn class="btn" ref="editButton" name="editButton" color="primary" @click="gotoForm()">Add post</q-btn>
           <q-data-table
               v-if="state.columns && state.columns.length"
               :data="state.items"
@@ -62,7 +62,7 @@ export default {
       this.$router.push({ name: 'form', params: { id: 12 } })
     }
   },
-  mounted () {
+  async mounted () {
     if (!this.state.version) {
       this.getMetadata()
         .then(() => this.getData())
