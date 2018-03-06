@@ -5,7 +5,7 @@
     <div>
         <p>Something went wrong</p>
     </div>
-    <router-link to="/">Go back to Home</router-link>
+    <router-link ref="homeLink" to="/">Go back to Home</router-link>
   </div>
 </template>
 
