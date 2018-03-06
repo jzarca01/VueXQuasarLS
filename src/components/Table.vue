@@ -62,7 +62,7 @@ export default {
       this.$router.push({ name: 'form', params: { id: 12 } })
     }
   },
-  mounted () {
+  async mounted () {
     if (!this.state.version) {
       this.getMetadata()
         .then(() => this.getData())

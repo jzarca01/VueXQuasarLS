@@ -1,17 +1,8 @@
-import axios from 'axios'
+import { fetchItems, fetchMetadata } from '../../common/requests'
 
+/*
 import * as metaData1 from '../../mocks/metadata1.json'
 import * as metaData2 from '../../mocks/metadata2.json'
-
-const fetchItems = (url) => {
-  return axios({
-    method: 'GET',
-    url: url,
-    responseType: 'json'
-  })
-    .then(response => response.data)
-    .catch(err => console.log('error', err))
-}
 
 const mockGetMetadata = (version) => {
   return new Promise((resolve, reject) => {
@@ -41,6 +32,22 @@ const mockPostData = async (version) => {
     }, 2000)
   })
 }
+*/
+
+const transformMetadata = (metadata) => {
+  let result = []
+  const keys = Object.keys(metadata)
+  const values = Object.values(metadata)
+  for (let i = 0; i < keys.length; i++) {
+    result.push({
+      field: keys[i],
+      label: keys[i],
+      type: values[i].type
+    })
+  }
+  return result
+}
+
 export default {
   namespaced: true,
 
@@ -87,6 +94,20 @@ export default {
   },
   actions: {
     async fetchMetadata (context) {
+      try {
+        await context.commit('toggleLoading', true)
+        const response = await fetchMetadata('somerandomurl')
+        console.log(response)
+        if (response.properties) {
+          const props = transformMetadata(response.properties.items.items.properties)
+          console.log('props', props)
+
+          await context.commit('setColumns', {
+            columns: props
+          })
+        }
+      }
+      /*
       const metaDataVersion = context.state.version
       try {
         await context.commit('toggleLoading', true)
@@ -104,12 +125,27 @@ export default {
         }
         await context.commit('toggleLoading', false)
       }
+      */
       catch (err) {
         console.log('err fetchmetadata', err)
       }
     },
     async fetchData (context) {
-      const metaDataVersion = context.state.version
+      try {
+        await context.commit('toggleLoading', true)
+        const response = await fetchItems('somerandomurl')
+        response.items.map(item => context.commit('addItem', {
+          item: item
+        }))
+        if (response.version) {
+          await context.commit('setMetadataVersion', {
+            version: response.version
+          })
+        }
+        await context.commit('toggleLoading', false)
+      }
+
+      /* const metaDataVersion = context.state.version
       try {
         await context.commit('toggleLoading', true)
         const response = await mockPostData(metaDataVersion)
@@ -124,7 +160,7 @@ export default {
           }))
         }
         await context.commit('toggleLoading', false)
-      }
+      } */
       catch (err) {
         console.log('err fetchdata', err)
       }
